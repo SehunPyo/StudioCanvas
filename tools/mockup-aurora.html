@@ -1,0 +1,304 @@
+<!doctype html>
+<!--
+  Aurora 앱 목업 — 제품 이미지용
+
+  실제 Aurora 창을 그대로 다시 그린 화면이다. 색은 앱의 라이트 테마 토큰
+  (styles.css :root) 을 그대로 가져왔다. 이 파일을 헤드리스 크롬으로 찍어
+  assets/products/aurora-card.jpg / aurora-hero.jpg 를 만든다.
+
+    python tools/make-mockups.py
+
+  실물 스크린샷이 생기면 이 파일은 버려도 된다.
+-->
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face {
+    font-family: 'Pretendard';
+    src: url('../fonts/Pretendard-Regular.woff2') format('woff2');
+    font-weight: 400;
+  }
+  @font-face {
+    font-family: 'Pretendard';
+    src: url('../fonts/Pretendard-Bold.woff2') format('woff2');
+    font-weight: 700;
+  }
+
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #fafafa;
+    --bg-tertiary: #f3f3f3;
+    --bg-hover: #f0f0f0;
+    --bg-active: #e8f0fe;
+    --border: #e8e8e8;
+    --text-primary: #1a1a1a;
+    --text-secondary: #333333;
+    --text-tertiary: #666666;
+    --text-muted: #999999;
+    --accent: #4a9eff;
+    --accent-bg: #e0ecff;
+    --highlight: #fff3a8;
+    --code-bg: #1e1e1e;
+    --code-text: #d4d4d4;
+    --sans: 'Pretendard', 'Segoe UI', -apple-system, sans-serif;
+    --mono: Consolas, 'SFMono-Regular', ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100vw; height: 100vh;
+    background: var(--bg-primary);
+    font-family: var(--sans);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  .win { display: flex; width: 100%; height: 100%; }
+
+  /* ── 아이콘 레일 ── */
+  .rail {
+    width: 64px; flex: none;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; align-items: center;
+    padding: 16px 0; gap: 6px;
+  }
+  .rail .logo {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: var(--text-primary); margin-bottom: 14px;
+    display: grid; place-items: center;
+  }
+  .rail .logo::after {
+    content: ''; width: 13px; height: 13px; border-radius: 50%;
+    background: var(--bg-primary);
+  }
+  .rb {
+    width: 40px; height: 40px; border-radius: 8px;
+    display: grid; place-items: center; color: var(--text-muted);
+  }
+  .rb.on { background: var(--accent-bg); color: var(--accent); }
+  .rb svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .rail .sep { width: 24px; height: 1px; background: var(--border); margin: 7px 0; }
+  .rail .grow { flex: 1; }
+
+  /* ── 사이드바 ── */
+  .side {
+    width: 290px; flex: none;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border);
+    padding: 20px 14px;
+  }
+  .side-head { display: flex; align-items: baseline; gap: 9px; padding: 0 8px 18px; }
+  .side-head b { font-size: 19px; letter-spacing: -0.02em; }
+  .side-head span { font-family: var(--mono); font-size: 11.5px; color: var(--text-muted); }
+  .side-label {
+    font-size: 11.5px; color: var(--text-muted); letter-spacing: 0.04em;
+    padding: 14px 8px 7px;
+  }
+  .si {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 9px; border-radius: 6px;
+    font-size: 14px; color: var(--text-secondary);
+  }
+  .si.on { background: var(--accent-bg); color: var(--accent); font-weight: 700; }
+  .si svg { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ── 본문 ── */
+  .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+  .tabs {
+    display: flex; align-items: stretch; height: 44px;
+    background: var(--bg-secondary); border-bottom: 1px solid var(--border);
+  }
+  .tab {
+    display: flex; align-items: center; gap: 9px;
+    padding: 0 18px; font-size: 13.5px; color: var(--text-tertiary);
+    border-right: 1px solid var(--border);
+  }
+  .tab.on { background: var(--bg-primary); color: var(--text-primary); font-weight: 700; }
+  .tab svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  .meta {
+    display: flex; align-items: center; gap: 14px;
+    height: 48px; padding: 0 22px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px; color: var(--text-tertiary);
+  }
+  .meta b { font-size: 14.5px; color: var(--text-primary); }
+  .chip {
+    background: var(--bg-tertiary); color: var(--text-tertiary);
+    padding: 3px 9px; border-radius: 999px; font-size: 11.5px;
+  }
+  .meta .grow { flex: 1; }
+  .btn {
+    display: flex; align-items: center; gap: 7px;
+    background: var(--accent); color: #fff;
+    padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: 700;
+  }
+  .btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ── 문서 ── */
+  .body { flex: 1; display: flex; min-height: 0; }
+  .doc { flex: 1; padding: 44px 56px; min-width: 0; }
+  .doc h1 { font-size: 31px; letter-spacing: -0.03em; margin-bottom: 8px; }
+  .doc .sub { font-family: var(--mono); font-size: 12.5px; color: var(--text-muted); margin-bottom: 30px; }
+  .doc p { font-size: 15.5px; line-height: 1.85; color: var(--text-secondary); margin-bottom: 18px; }
+  .doc h2 { font-size: 20px; letter-spacing: -0.02em; margin: 30px 0 12px; }
+  mark { background: var(--highlight); color: inherit; padding: 1px 2px; }
+  .wiki { color: var(--accent); }
+  .todo { display: flex; align-items: center; gap: 11px; font-size: 15.5px; color: var(--text-secondary); margin-bottom: 11px; }
+  .todo i {
+    width: 17px; height: 17px; border: 2px solid var(--text-muted);
+    border-radius: 4px; flex: none;
+  }
+  .todo.done i { background: var(--accent); border-color: var(--accent); position: relative; }
+  .todo.done i::after {
+    content: ''; position: absolute; left: 4px; top: 1px;
+    width: 4px; height: 8px; border: solid #fff; border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .todo.done span { color: var(--text-muted); text-decoration: line-through; }
+  pre {
+    background: var(--code-bg); color: var(--code-text);
+    padding: 18px 20px; border-radius: 8px; margin: 18px 0;
+    font-family: var(--mono); font-size: 13px; line-height: 1.7;
+  }
+  pre .k { color: #569cd6; }
+  pre .s { color: #ce9178; }
+  pre .c { color: #6a9955; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0 22px; font-size: 14.5px; }
+  th, td { border: 1px solid var(--border); padding: 9px 14px; text-align: left; color: var(--text-secondary); }
+  th { background: var(--bg-tertiary); color: var(--text-primary); font-weight: 700; }
+  td:first-child, th:first-child { width: 90px; }
+
+  /* ── AI 패널 ── */
+  .ai {
+    width: 340px; flex: none;
+    border-left: 1px solid var(--border);
+    background: var(--bg-secondary);
+    display: flex; flex-direction: column;
+    padding: 18px 16px;
+  }
+  .ai-head { display: flex; align-items: center; gap: 9px; font-size: 13.5px; font-weight: 700; margin-bottom: 16px; }
+  .ai-head svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .ai-head em { font-style: normal; margin-left: auto; font-weight: 400; font-family: var(--mono); font-size: 11px; color: var(--text-muted); }
+  .msg {
+    border-radius: 10px; padding: 11px 13px; font-size: 13px; line-height: 1.65;
+    margin-bottom: 10px; max-width: 86%;
+  }
+  .msg.me { background: var(--accent); color: #fff; margin-left: auto; }
+  .msg.ai { background: var(--bg-primary); border: 1px solid var(--border); color: var(--text-secondary); }
+  .ai .grow { flex: 1; }
+  .ai-in {
+    border: 1px solid var(--border); background: var(--bg-primary);
+    border-radius: 8px; padding: 10px 12px;
+    font-size: 13px; color: var(--text-muted);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .ai-in .dot { margin-left: auto; width: 24px; height: 24px; border-radius: 6px; background: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="win">
+
+  <nav class="rail">
+    <span class="logo"></span>
+    <span class="rb on"><svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/><path d="M8 13h8M8 17h6"/></svg></span>
+    <span class="rb"><svg viewBox="0 0 24 24"><path d="M4 20a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4l2 3h8a2 2 0 0 1 2 2v2"/><path d="M2 18l2.5-7h17L19 18a2 2 0 0 1-2 2H4z"/></svg></span>
+    <span class="sep"></span>
+    <span class="rb"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></span>
+    <span class="rb"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg></span>
+    <span class="sep"></span>
+    <span class="rb"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4M8 16h.01M16 16h.01"/></svg></span>
+    <span class="rb"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="15" width="6" height="6" rx="1"/><path d="M6 9v3a3 3 0 0 0 3 3h3a3 3 0 0 1 3 3"/></svg></span>
+    <span class="grow"></span>
+    <span class="rb"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c.9 0 1.5-.7 1.5-1.5 0-.4-.2-.8-.4-1.1-.3-.3-.4-.7-.4-1.1 0-.8.7-1.5 1.5-1.5H16a5 5 0 0 0 5-5c0-4.4-4-8-9-8z"/><circle cx="7.5" cy="10.5" r="1.1"/><circle cx="12" cy="7.5" r="1.1"/><circle cx="16.5" cy="10.5" r="1.1"/></svg></span>
+  </nav>
+
+  <nav class="side">
+    <div class="side-head"><b>Aurora</b><span>v7.0.2</span></div>
+
+    <p class="side-label">즐겨찾기</p>
+    <div class="si on"><svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/></svg><span>스프린트 회고</span></div>
+    <div class="si"><svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/></svg><span>읽을거리</span></div>
+
+    <p class="side-label">회의록</p>
+    <div class="si"><svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/></svg><span>2026-09-18 스프린트</span></div>
+    <div class="si"><svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/></svg><span>2026-09-11 킥오프</span></div>
+    <div class="si"><svg viewBox="0 0 24 24"><path d="M4 20a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4l2 3h8a2 2 0 0 1 2 2v2"/><path d="M2 18l2.5-7h17L19 18a2 2 0 0 1-2 2H4z"/></svg><span>지난 분기</span></div>
+
+    <p class="side-label">연구</p>
+    <div class="si"><svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/></svg><span>그래프 성능 측정</span></div>
+    <div class="si"><svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/></svg><span>로컬 모델 비교</span></div>
+    <div class="si"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg><span>벤치마크.sheet</span></div>
+  </nav>
+
+  <div class="main">
+    <div class="tabs">
+      <div class="tab on"><svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/></svg>스프린트 회고.md</div>
+      <div class="tab"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>그래프</div>
+    </div>
+
+    <div class="meta">
+      <b>스프린트 회고</b>
+      <span>수정 2026-09-20</span>
+      <span class="chip">#로컬우선</span>
+      <span class="chip">#오프라인</span>
+      <span class="grow"></span>
+      <span class="btn"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>저장됨</span>
+    </div>
+
+    <div class="body">
+      <div class="doc">
+        <h1>2026-09-18 스프린트 회고</h1>
+        <p class="sub">~/Documents/Aurora/회의록/2026-09-18 스프린트 회고.md</p>
+
+        <p>이번 스프린트에서 동기화 큐를 걷어내고 저장 경로를 단일화했다.
+           <mark>다음 주는 그래프 성능</mark>을 본다. 관련 메모는
+           <span class="wiki">[[그래프 성능 측정]]</span>에 모아 두었다.</p>
+
+        <h2>남은 일</h2>
+        <div class="todo done"><i></i><span>저장 경로 마이그레이션 검증</span></div>
+        <div class="todo"><i></i><span>3D 그래프 노드 500개 프로파일링</span></div>
+        <div class="todo"><i></i><span>로컬 모델 요약 프롬프트 재작성</span></div>
+
+        <h2>측정 스크립트</h2>
+<pre><span class="c"># 노드 수를 늘려 가며 프레임 시간을 잰다</span>
+<span class="k">for</span> n <span class="k">in</span> [100, 250, 500, 1000]:
+    g = graph.build(nodes=n)
+    print(n, g.frame_ms(<span class="s">"3d"</span>))</pre>
+
+        <h2>측정값</h2>
+        <table>
+          <tr><th>노드</th><th>2D</th><th>3D</th><th>메모리</th></tr>
+          <tr><td>100</td><td>4.1 ms</td><td>6.8 ms</td><td>82 MB</td></tr>
+          <tr><td>250</td><td>5.9 ms</td><td>11.2 ms</td><td>104 MB</td></tr>
+          <tr><td>500</td><td>9.4 ms</td><td>23.7 ms</td><td>151 MB</td></tr>
+        </table>
+
+        <p>500개부터 3D 가 프레임 예산을 넘는다. 노드 병합과 간선 간략화를
+           먼저 보고, 그래도 모자라면 화면 밖 노드를 잘라내는 쪽으로 간다.</p>
+      </div>
+
+      <aside class="ai">
+        <div class="ai-head">
+          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4M8 16h.01M16 16h.01"/></svg>
+          AI 채팅 <em>llama3 · 로컬</em>
+        </div>
+        <div class="msg me">이 메모에서 다음 주에 할 일만 뽑아 줘.</div>
+        <div class="msg ai">세 가지입니다.<br>1. 3D 그래프 노드 500개 프로파일링<br>2. 로컬 모델 요약 프롬프트 재작성<br>3. 저장 경로 마이그레이션 결과 공유<br><br>첫 번째가 이번 스프린트의 블로커로 표시돼 있습니다.</div>
+        <div class="msg me">두 번째를 할 일로 추가해 줘.</div>
+        <div class="msg ai">추가했습니다. 파일에 바로 저장했고, 외부로 나간 내용은 없습니다.</div>
+        <div class="grow"></div>
+        <div class="ai-in">무엇이든 물어보세요<span class="dot"></span></div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

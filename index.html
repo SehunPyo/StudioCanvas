@@ -1,0 +1,197 @@
+<!doctype html>
+<!--
+  Studio Canvas — 브랜드 사이트 (입구)
+
+  첫 화면 : 글자 모양으로 잘라낸 유체 시뮬레이션. 커서를 올리면 글자 안에서
+            물감이 번진다. (fluid-text.js — Originkit FluidText 를 바닐라로 옮김)
+  두 번째 : 스크롤에 맞춰 스튜디오의 슬로건이 한 단어씩 켜진다.
+  세 번째 : 제품 16칸. 나온 것은 목업이 들어가고, 나머지는 Coming Soon.
+
+  제품 설명은 여기서 하지 않는다. Aurora 의 소개·기능·설치·FAQ 는
+  전부 aurora.html 안에 있다. 이 페이지는 그 앞에 서는 간판이다.
+
+  제품 이미지는 tools/ 의 스크립트가 만든다.
+    python tools/make-mockups.py
+-->
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Studio Canvas</title>
+<meta name="description" content="Studio Canvas는 매일 쓰는 데스크톱 소프트웨어를 만드는 스튜디오입니다. 만든 것은 전부 무료로 공개하고, 데이터는 사용자의 컴퓨터 안에 둡니다.">
+<meta property="og:title" content="Studio Canvas">
+<meta property="og:description" content="매일 쓰는 데스크톱 소프트웨어. 전부 무료, 전부 로컬.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#08080a">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32">
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9340425102772278"
+     crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="studio.css">
+</head>
+<body>
+
+<a class="skip-link" href="#work">제품 목록으로 건너뛰기</a>
+
+<div class="prog" id="prog"></div>
+
+<header class="head" id="head">
+  <div class="wrap head-in">
+    <a class="head-mark" href="#top"><i aria-hidden="true"></i>Studio&nbsp;Canvas</a>
+    <nav class="nav" aria-label="주요 메뉴">
+      <a href="#about" class="opt">스튜디오</a>
+      <a href="https://cafe.naver.com/haveinjob" class="opt" target="_blank" rel="noopener">커뮤니티</a>
+      <a href="#work" class="nav-cta">제품 보기</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ═══ 1. 첫 화면 ═══════════════════════════════════════════ -->
+  <section class="hero" id="hero">
+    <h1 class="sr-only">Studio Canvas</h1>
+
+    <canvas class="fluid" id="fluid" aria-hidden="true"></canvas>
+
+    <!-- WebGL 을 쓸 수 없을 때 대신 서는 글자 -->
+    <p class="fluid-fallback" id="fluidFallback" hidden>Studio<br>Canvas</p>
+
+    <p class="hero-tag">매일 사용하는 데스크톱 소프트웨어를 만듭니다.</p>
+
+    <a class="cue hero-cue" href="#work">
+      <span class="cue-ring">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15M5.5 12.5 12 19l6.5-6.5"/></svg>
+      </span>
+      <span class="cue-label">Scroll</span>
+    </a>
+  </section>
+
+  <!-- ═══ 2. 스튜디오 ══════════════════════════════════════════ -->
+  <section class="say" id="about" data-say>
+    <div class="say-sticky">
+      <div class="say-in">
+        <!-- 유체가 되는 문장. WebGL 이 없으면 아래 h2 가 그대로 보이고,
+             있으면 캔버스가 대신 서고 h2 는 읽어 주는 용도로만 남는다. -->
+        <canvas class="say-fluid" id="sayFluid" aria-hidden="true"></canvas>
+
+        <h2 class="say-text">
+          <span class="line" data-split>매일 사용하는 도구를 만듭니다.</span>
+          <span class="line" data-split>값은 매기지 않습니다.</span>
+        </h2>
+
+        <p class="say-note">
+          가장 좋은 프로그램은 가장 자주 사용하게 되는 프로그램이라고 생각합니다.
+          스튜디오 캔버스는 무료 프로그램도 가장 좋은 프로그램을 목표로 만듭니다.
+        </p>
+
+        <div class="vals">
+          <div style="--d:0ms"><b>Free</b><span>Price</span></div>
+          <div style="--d:110ms"><b>사용자 PC</b><span>Data</span></div>
+          <div style="--d:220ms"><b>Windows · macOS</b><span>Platform</span></div>
+        </div>
+      </div>
+
+      <a class="cue say-cue" href="#work">
+        <span class="cue-ring">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15M5.5 12.5 12 19l6.5-6.5"/></svg>
+        </span>
+        <span class="cue-label">제품 보기</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══ 3. 흐르는 띠 ═════════════════════════════════════════ -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-in">
+      <span>Studio&nbsp;Canvas <em>—</em> Software for every day <em>—</em>&nbsp;</span>
+      <span>Studio&nbsp;Canvas <em>—</em> Software for every day <em>—</em>&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- ═══ 4. 제품 ══════════════════════════════════════════════ -->
+  <section class="wrap work" id="work">
+    <div class="work-bar">
+      <h2 class="work-title">Products<em>16</em></h2>
+      <div class="filters" id="filters" role="group" aria-label="제품 거르기">
+        <button type="button" data-filter="all" aria-pressed="true">전체 16</button>
+        <button type="button" data-filter="live" aria-pressed="false">출시 2</button>
+        <button type="button" data-filter="soon" aria-pressed="false">준비 중 14</button>
+      </div>
+    </div>
+
+    <div class="grid" id="grid">
+
+      <a class="card" href="aurora.html" data-state="live">
+        <div class="card-vis">
+          <span class="card-badge">Download</span>
+          <img src="assets/products/aurora-card.jpg" alt="Aurora 앱 화면 — 마크다운 메모와 로컬 AI 채팅"
+               width="1400" height="1050">
+        </div>
+        <div class="card-foot">
+          <h3 class="card-name">Aurora</h3>
+          <div class="card-tags"><span>메모</span><span>AI</span><span>자동화</span></div>
+          <span class="card-meta">v7.1.2</span>
+        </div>
+      </a>
+
+      <a class="card" href="fileconnect.html" data-state="live">
+        <div class="card-vis">
+          <span class="card-badge">Download</span>
+          <img src="assets/products/fileconnect-card.jpg" alt="FileConnect 앱 화면 — 파일을 올리자 여섯 자리 코드가 나온 창"
+               width="1400" height="1050">
+        </div>
+        <div class="card-foot">
+          <h3 class="card-name">FileConnect</h3>
+          <div class="card-tags"><span>파일 공유</span><span>Mac · Windows</span></div>
+          <span class="card-meta">v1.0.0</span>
+        </div>
+      </a>
+      <div class="card soon" data-state="soon"><div class="card-vis coming"><span>Coming Soon</span></div></div>
+      <div class="card soon" data-state="soon"><div class="card-vis coming"><span>Coming Soon</span></div></div>
+      <div class="card soon" data-state="soon"><div class="card-vis coming"><span>Coming Soon</span></div></div>
+      <div class="card soon" data-state="soon"><div class="card-vis coming"><span>Coming Soon</span></div></div>
+      <div class="card soon" data-state="soon"><div class="card-vis coming"><span>Coming Soon</span></div></div>
+      <div class="card soon" data-state="soon"><div class="card-vis coming"><span>Coming Soon</span></div></div>
+      <div class="card soon" data-state="soon"><div class="card-vis coming"><span>Coming Soon</span></div></div>
+      <div class="card soon" data-state="soon"><div class="card-vis coming"><span>Coming Soon</span></div></div>
+      <div class="card soon" data-state="soon"><div class="card-vis coming"><span>Coming Soon</span></div></div>
+      <div class="card soon" data-state="soon"><div class="card-vis coming"><span>Coming Soon</span></div></div>
+      <div class="card soon" data-state="soon"><div class="card-vis coming"><span>Coming Soon</span></div></div>
+      <div class="card soon" data-state="soon"><div class="card-vis coming"><span>Coming Soon</span></div></div>
+      <div class="card soon" data-state="soon"><div class="card-vis coming"><span>Coming Soon</span></div></div>
+      <div class="card soon" data-state="soon"><div class="card-vis coming"><span>Coming Soon</span></div></div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══ 5. 닫는 말 ═══════════════════════════════════════════ -->
+<footer class="end" id="contact">
+  <div class="wrap">
+    <h2>다음 제품을<br>만들고 있습니다.</h2>
+    <p class="end-sub">스튜디오 캔버스와 함께하세요.</p>
+    <a class="end-link" href="https://cafe.naver.com/haveinjob" target="_blank" rel="noopener">https://cafe.naver.com/haveinjob</a>
+
+    <div class="foot">
+      <span>© <span id="year">2026</span> Studio Canvas</span>
+      <span class="foot-links">
+        <a href="#work">Products</a>
+        <a href="aurora.html">Aurora</a>
+        <a href="fileconnect.html">FileConnect</a>
+        <a href="https://github.com/SehunPyo/Aurora_web_download/releases">Releases</a>
+      </span>
+      <span>Seoul, KR</span>
+    </div>
+  </div>
+</footer>
+
+<script src="fluid-text.js"></script>
+<script src="studio.js"></script>
+</body>
+</html>

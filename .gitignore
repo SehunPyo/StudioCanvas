@@ -1,0 +1,14 @@
+# 설치 파일은 깃에 올리지 않는다.
+# 100MB 가 넘어 푸시가 거부되고, Vercel 정적 파일 한도(Hobby 100MB)도 넘는다.
+# 배포본은 GitHub Releases 에 올리고 버튼은 그 URL 을 가리킨다.
+downloads/*
+!downloads/README.txt
+
+# OS / 편집기
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Vercel
+.vercel

@@ -1,0 +1,71 @@
+{
+  "_readme": [
+    "Studio Canvas 제품 데이터 — 다운로드 전용 페이지의 유일한 출처.",
+    "이 파일을 고친 뒤 'python tools/build-downloads.py' 를 돌리면",
+    "download/<slug>/<platform>/index.html 이 다시 만들어진다.",
+    "platform 키는 URL 이 되므로 windows / macos / linux 만 쓴다.",
+    "releaseRepo + assetExt 가 있으면 페이지가 GitHub 최신 릴리즈를 따라간다(나머지 값은 API 실패 시 대체값)."
+  ],
+  "products": [
+    {
+      "name": "Aurora",
+      "slug": "aurora",
+      "tagline": "로컬 마크다운 메모와 내 컴퓨터 안의 AI",
+      "icon": "/assets/icon-64.png",
+      "productPage": "/aurora.html",
+      "releaseRepo": "SehunPyo/Aurora_web_download",
+      "version": "7.1.2",
+      "updatedAt": "2026-09-23",
+      "platforms": {
+        "windows": {
+          "label": "Windows",
+          "requirement": "Windows 10 이상",
+          "fileName": "Aurora-7.1.2-win.exe",
+          "fileSize": "128 MB",
+          "downloadUrl": "https://github.com/SehunPyo/Aurora_web_download/releases/download/v7.1.2/Aurora-7.1.2-win.exe",
+          "hint": "받은 파일을 실행하면 설치가 시작됩니다.",
+          "assetExt": ".exe"
+        },
+        "macos": {
+          "label": "macOS",
+          "requirement": "macOS 11 이상 · Apple Silicon",
+          "fileName": "Aurora-7.1.2-mac-arm64.dmg",
+          "fileSize": "149 MB",
+          "downloadUrl": "https://github.com/SehunPyo/Aurora_web_download/releases/download/v7.1.2/Aurora-7.1.2-mac-arm64.dmg",
+          "hint": "받은 .dmg 파일을 열어 설치하세요.",
+          "assetExt": ".dmg"
+        }
+      }
+    },
+    {
+      "name": "FileConnect",
+      "slug": "fileconnect",
+      "tagline": "같은 네트워크의 PC끼리 코드 여섯 자리로 주고받기",
+      "icon": "/assets/fileconnect/icon.png",
+      "productPage": "/fileconnect.html",
+      "releaseRepo": "SehunPyo/FileConnect_Web_Download",
+      "version": "1.0.0",
+      "updatedAt": "2026-09-26",
+      "platforms": {
+        "windows": {
+          "label": "Windows",
+          "requirement": "Windows 10 이상 · 64비트",
+          "fileName": "FileConnect.Setup.1.0.0.exe",
+          "fileSize": "89 MB",
+          "downloadUrl": "https://github.com/SehunPyo/FileConnect_Web_Download/releases/download/v1.0.0/FileConnect.Setup.1.0.0.exe",
+          "hint": "받은 파일을 실행하면 설치가 시작됩니다.",
+          "assetExt": ".exe"
+        },
+        "macos": {
+          "label": "macOS",
+          "requirement": "Apple Silicon",
+          "fileName": "FileConnect-1.0.0-arm64.dmg",
+          "fileSize": "105 MB",
+          "downloadUrl": "https://github.com/SehunPyo/FileConnect_Web_Download/releases/download/v1.0.0/FileConnect-1.0.0-arm64.dmg",
+          "hint": "받은 .dmg 파일을 열어 설치하세요.",
+          "assetExt": "-arm64.dmg"
+        }
+      }
+    }
+  ]
+}

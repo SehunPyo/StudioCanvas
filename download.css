@@ -1,0 +1,174 @@
+/* ══════════════════════════════════════════════════════════════════════
+   다운로드 전용 페이지 (/download/<slug>/<platform>)
+
+   studio.css 의 색·폰트 토큰을 그대로 쓰고, 이 화면에 필요한 것만 더한다.
+   메인/제품 페이지의 CSS 는 건드리지 않는다.
+
+   이 경로에는 Google AdSense Offerwall(보상형 광고)을 AdSense 관리자에서
+   적용한다. 광고 UI 는 여기서 만들지 않는다 — Google 이 직접 띄운다.
+   ══════════════════════════════════════════════════════════════════════ */
+
+.dl-page {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+@supports not (min-height: 100svh) { .dl-page { min-height: 100vh; } }
+
+/* ── 상단 ── */
+
+.dl-top {
+  border-bottom: 1px solid var(--line);
+}
+.dl-top-in {
+  max-width: 1720px;
+  margin: 0 auto;
+  padding: 0 var(--gut);
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.dl-mark {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-weight: 700; font-size: 13px; letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.dl-mark i {
+  width: 9px; height: 9px; background: currentColor;
+  transition: transform 0.45s var(--ease);
+}
+.dl-mark:hover i { transform: rotate(45deg); }
+.dl-top a.dl-back-top {
+  font-size: 13.5px; color: var(--fg-2);
+  transition: color 0.25s var(--ease);
+}
+.dl-top a.dl-back-top:hover { color: var(--fg); }
+
+/* ── 본문 ── */
+
+.dl-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(28px, 6vh, 72px) var(--gut);
+}
+.dl-card {
+  width: 100%;
+  max-width: 520px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #0d0d10;
+  padding: clamp(26px, 4.5vw, 44px);
+  text-align: center;
+}
+
+.dl-icon {
+  width: 56px; height: 56px;
+  margin: 0 auto 18px;
+  border-radius: 12px;
+}
+
+.dl-name {
+  margin: 0;
+  font-size: clamp(26px, 3.4vw, 38px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+.dl-sub {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: var(--fg-2);
+  letter-spacing: -0.015em;
+}
+
+/* ── 정보 표 ── */
+
+.dl-spec {
+  margin: clamp(24px, 4vh, 34px) 0 0;
+  border-top: 1px solid var(--line);
+  text-align: left;
+}
+.dl-spec div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.dl-spec dt {
+  font-size: 13px;
+  color: var(--fg-3);
+  white-space: nowrap;
+}
+.dl-spec dd {
+  margin: 0;
+  font-size: 13.5px;
+  text-align: right;
+  letter-spacing: -0.015em;
+  word-break: break-all;
+}
+.dl-spec dd.mono {
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Mono', Consolas, monospace;
+  font-size: 12px;
+  color: var(--fg-2);
+}
+
+/* ── 내려받기 ── */
+
+.dl-go {
+  display: block;
+  margin-top: clamp(24px, 4vh, 34px);
+  background: var(--fg);
+  color: var(--bg);
+  border-radius: 999px;
+  padding: 16px 24px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+}
+.dl-go:hover { opacity: 0.88; transform: translateY(-1px); }
+.dl-go:active { transform: none; }
+
+.dl-hint {
+  margin: 14px 0 0;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--fg-3);
+}
+
+.dl-other {
+  margin: clamp(20px, 3vh, 28px) 0 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 18px;
+  font-size: 13px;
+}
+.dl-other span { color: var(--fg-3); }
+.dl-other a { color: var(--fg-2); transition: color 0.25s var(--ease); }
+.dl-other a:hover { color: var(--fg); }
+
+/* ── 아래 ── */
+
+.dl-foot {
+  border-top: 1px solid var(--line);
+  padding: 22px var(--gut);
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--fg-3);
+}
+.dl-foot a { transition: color 0.25s var(--ease); }
+.dl-foot a:hover { color: var(--fg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .dl-go, .dl-mark i { transition: none; }
+  .dl-go:hover { transform: none; }
+}

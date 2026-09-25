@@ -1,0 +1,486 @@
+/* ══════════════════════════════════════════════════════════════════════
+   Studio Canvas — 브랜드 사이트
+
+   페이지 전체가 하나의 어두운 면이다. 첫 화면에서 흰 문서로 떨어지지 않는다.
+   헤어라인·작은 라벨·번호 매기기를 쓰지 않는다 — 그게 문서처럼 보이게 만든다.
+   화면을 채우는 것은 큰 글자와 제품 그림뿐이다.
+
+   제품 설명은 이 페이지가 하지 않는다. Aurora 의 소개·기능·설치·FAQ 는
+   전부 aurora.html 안에 있다. 여기는 입구다.
+   ══════════════════════════════════════════════════════════════════════ */
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('fonts/Pretendard-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pretendard';
+  src: url('fonts/Pretendard-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --bg:     #08080a;
+  --bg-2:   #121215;
+  --fg:     #ffffff;
+  --fg-2:   #97979e;
+  --fg-3:   #55555c;
+  --dim:    #2e2e33;
+  --line:   rgba(255, 255, 255, 0.11);
+
+  --sans: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+          'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
+
+  --gut: clamp(18px, 4vw, 60px);
+  --ease: cubic-bezier(0.22, 0.72, 0.2, 1);
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; background: var(--bg); }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.65;
+  letter-spacing: -0.014em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; }
+
+::selection { background: var(--fg); color: var(--bg); }
+:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
+.wrap {
+  width: 100%;
+  max-width: 1720px;
+  margin: 0 auto;
+  padding-inline: var(--gut);
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: absolute; left: -9999px; top: 0; z-index: 300;
+  background: var(--fg); color: var(--bg); padding: 12px 18px; font-size: 13px;
+}
+.skip-link:focus { left: 12px; top: 12px; }
+
+/* ══ 헤더 ═══════════════════════════════════════════════════════ */
+
+.head {
+  position: fixed; inset: 0 0 auto 0; z-index: 200;
+  transition: background 0.5s var(--ease);
+}
+.head.stuck { background: rgba(8, 8, 10, 0.92); }
+.head-in {
+  height: 66px; display: flex; align-items: center;
+  justify-content: space-between; gap: 20px;
+}
+.head-mark {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-weight: 700; font-size: 13px; letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.head-mark i {
+  width: 9px; height: 9px; background: currentColor;
+  transition: transform 0.45s var(--ease);
+}
+.head-mark:hover i { transform: rotate(45deg); }
+
+.nav { display: flex; align-items: center; gap: clamp(16px, 2vw, 32px); }
+.nav a { font-size: 14px; color: var(--fg-2); transition: color 0.25s var(--ease); }
+.nav a:hover { color: var(--fg); }
+.nav .nav-cta {
+  color: var(--bg); background: var(--fg);
+  padding: 10px 20px; font-size: 13.5px; font-weight: 700;
+  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+}
+.nav .nav-cta:hover { color: var(--bg); opacity: 0.86; transform: translateY(-1px); }
+@media (max-width: 560px) { .nav a.opt { display: none; } }
+
+.prog {
+  position: fixed; top: 0; left: 0; height: 2px; z-index: 210;
+  width: 100%; transform: scaleX(0); transform-origin: left;
+  background: var(--fg); opacity: 0;
+  transition: opacity 0.35s var(--ease);
+}
+.prog.on { opacity: 0.85; }
+
+/* ══ 1. 첫 화면 — 글자 안에서 번지는 유체 ══════════════════════ */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 100px var(--gut) 190px;
+  text-align: center;
+}
+@supports not (min-height: 100svh) { .hero { min-height: 100vh; } }
+
+.fluid {
+  display: block;
+  width: 100%;
+  max-width: 1500px;
+  height: clamp(230px, 50vh, 580px);
+  touch-action: none;
+  opacity: 0;
+  transition: opacity 1.2s var(--ease) 0.15s;
+}
+body.ready .fluid { opacity: 1; }
+
+/* WebGL 이 없으면 유체 대신 그냥 글자가 선다 */
+.fluid-fallback {
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(40px, 11.5vw, 200px);
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+}
+
+.hero-tag {
+  margin: clamp(8px, 1.6vh, 22px) auto 0;
+  max-width: 40ch;
+  font-size: clamp(14px, 1.15vw, 18px);
+  color: rgba(255, 255, 255, 0.6);
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 1s var(--ease) 0.6s, transform 1s var(--ease) 0.6s;
+}
+body.ready .hero-tag { opacity: 1; transform: none; }
+
+/* 스크롤 표시 — 첫 화면과 선언 화면이 같은 부품을 쓴다 */
+.cue {
+  position: absolute; z-index: 3;
+  left: 50%; bottom: clamp(26px, 5vh, 60px);
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 13px;
+  color: rgba(255, 255, 255, 0.72);
+  transition: color 0.3s var(--ease);
+}
+.cue:hover { color: #fff; }
+
+.hero-cue {
+  opacity: 0;
+  transition: opacity 1s var(--ease) 0.9s, color 0.3s var(--ease);
+}
+body.ready .hero-cue { opacity: 1; }
+
+.cue-ring {
+  width: clamp(58px, 5.6vw, 80px);
+  height: clamp(58px, 5.6vw, 80px);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  display: grid; place-items: center;
+  transition: border-color 0.3s var(--ease), background 0.3s var(--ease),
+              transform 0.4s var(--ease);
+}
+.cue:hover .cue-ring {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(3px);
+}
+.cue-ring svg {
+  width: 40%; height: 40%;
+  fill: none; stroke: currentColor; stroke-width: 1.5;
+  stroke-linecap: round; stroke-linejoin: round;
+  animation: nudge 2.4s var(--ease) infinite;
+}
+@keyframes nudge {
+  0%, 100% { transform: translateY(-14%); opacity: 0.55; }
+  50%      { transform: translateY(14%);  opacity: 1; }
+}
+
+.cue-label { font-size: 12.5px; letter-spacing: 0.16em; }
+.hero-cue .cue-label { letter-spacing: 0.22em; text-transform: uppercase; }
+
+/* ══ 2. 선언 — 스크롤에 맞춰 단어가 켜진다 ════════════════════ */
+
+.say { position: relative; height: 190svh; }
+@supports not (height: 100svh) { .say { height: 190vh; } }
+
+.say-sticky {
+  position: sticky; top: 0;
+  height: 100svh; min-height: 520px;
+  display: flex; align-items: center;
+  padding-inline: var(--gut);
+}
+/* 이 화면에도 다음으로 갈 길이 보여야 한다 */
+.say-cue { bottom: clamp(24px, 4.5vh, 54px); }
+@media (max-height: 720px) { .say-cue .cue-label { display: none; } }
+.say-in { width: 100%; max-width: 1720px; margin: 0 auto; }
+
+/* 문장을 물감으로 칠할 때 쓰는 캔버스 */
+.say-fluid {
+  display: none;
+  width: 100%;
+  /* 글자 크기가 폭에 따라 정해지므로 높이도 폭을 따라간다 */
+  height: clamp(100px, 16vw, 290px);
+  touch-action: none;
+}
+.say.paint .say-fluid { display: block; }
+.say.paint .say-text {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+.say-text {
+  margin: 0;
+  font-weight: 700;
+  /* 한 문장이 한 줄에 들어가는 크기 — 두 줄을 각각 통으로 읽히게 한다 */
+  font-size: clamp(25px, 5.3vw, 92px);
+  line-height: 1.12;
+  letter-spacing: -0.045em;
+  max-width: 22ch;
+}
+.say-text .line { display: block; }
+.say-text .w { color: var(--dim); transition: color 0.4s linear; }
+.say-text .w.lit { color: var(--fg); }
+
+.say-note {
+  margin: clamp(24px, 3.6vh, 46px) 0 0;
+  max-width: 48ch;
+  font-size: clamp(15px, 1.3vw, 21px);
+  line-height: 1.62;
+  letter-spacing: -0.02em;
+  color: #a6a6ad;
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+}
+.say-note.lit { opacity: 1; transform: none; }
+
+.vals {
+  display: flex; flex-wrap: wrap;
+  gap: clamp(20px, 4vw, 72px);
+  margin: clamp(30px, 5vh, 62px) 0 0;
+}
+.vals div {
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+  transition-delay: var(--d, 0ms);
+}
+.vals div.lit { opacity: 1; transform: none; }
+.vals b {
+  display: block;
+  font-size: clamp(18px, 1.9vw, 30px);
+  font-weight: 700; letter-spacing: -0.035em; line-height: 1.2;
+}
+.vals span {
+  display: block; margin-top: 4px;
+  font-size: 13px; color: var(--fg-3); letter-spacing: 0;
+}
+
+/* ══ 3. 흐르는 띠 ═════════════════════════════════════════════ */
+
+.ticker {
+  overflow: hidden;
+  padding-block: clamp(26px, 4vh, 54px);
+  user-select: none;
+}
+.ticker-in { display: flex; width: max-content; animation: slide 44s linear infinite; }
+.ticker span {
+  display: block;
+  padding-right: clamp(28px, 4vw, 70px);
+  font-weight: 700;
+  font-size: clamp(30px, 5.4vw, 92px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--dim);
+  white-space: nowrap;
+}
+.ticker span em { font-style: normal; color: var(--fg-3); }
+@keyframes slide { to { transform: translateX(-50%); } }
+
+/* ══ 4. 제품 그리드 ═══════════════════════════════════════════ */
+
+.work { padding-bottom: 0; }
+
+.work-bar {
+  display: flex; flex-wrap: wrap; align-items: center;
+  justify-content: space-between; gap: 14px 28px;
+  padding-block: clamp(14px, 2vh, 24px);
+  margin-bottom: clamp(18px, 2.6vh, 30px);
+  position: sticky; top: 66px; z-index: 50;
+  background: var(--bg);
+}
+.work-title {
+  margin: 0; font-weight: 700;
+  font-size: clamp(24px, 3vw, 46px);
+  letter-spacing: -0.04em; line-height: 1;
+}
+.work-title em {
+  font-style: normal; color: var(--fg-3);
+  font-size: 0.42em; vertical-align: super; margin-left: 10px;
+  letter-spacing: -0.02em;
+}
+
+.filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.filters button {
+  border: 0;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--fg-2);
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-size: 13px; letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: background 0.25s var(--ease), color 0.25s var(--ease);
+}
+.filters button:hover { background: rgba(255, 255, 255, 0.14); color: var(--fg); }
+.filters button[aria-pressed="true"] { background: var(--fg); color: var(--bg); font-weight: 700; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(20px, 2.2vw, 38px) clamp(16px, 1.5vw, 28px);
+  align-items: start;
+}
+@media (max-width: 1180px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 760px)  { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.card {
+  display: block;
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.75s var(--ease), transform 0.75s var(--ease);
+  transition-delay: var(--d, 0ms);
+}
+.card.in { opacity: 1; transform: none; }
+.card.hide { display: none; }
+
+.card-vis {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--bg-2);
+}
+.card-vis img {
+  width: 100%; height: 100%; object-fit: cover; object-position: top left;
+  transition: transform 0.8s var(--ease);
+}
+.card:hover .card-vis img { transform: scale(1.05); }
+.card-vis::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  transition: box-shadow 0.4s var(--ease);
+  pointer-events: none;
+}
+.card:hover .card-vis::after { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5); }
+
+/* 아직 안 나온 칸 — 흰 판에 검은 글씨, 그게 전부 */
+.card-vis.coming {
+  background: #ffffff;
+  color: #0b0b0b;
+  display: grid; place-items: center;
+}
+.card-vis.coming span {
+  font-size: clamp(14px, 1.35vw, 21px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+.card.soon .card-vis::after { box-shadow: none; }
+
+.card-badge {
+  position: absolute; right: 12px; top: 12px; z-index: 2;
+  background: var(--bg); color: var(--fg);
+  font-size: 11px; font-weight: 700; letter-spacing: -0.01em;
+  padding: 6px 12px; line-height: 1.4;
+  border-radius: 999px;
+}
+
+.card-foot { padding-top: 15px; }
+.card-name {
+  margin: 0;
+  font-size: clamp(19px, 1.6vw, 25px);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+}
+.card-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+.card-tags span {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--fg-2);
+  padding: 4px 11px;
+  font-size: 11.5px;
+  letter-spacing: -0.01em;
+  transition: background 0.25s var(--ease), color 0.25s var(--ease);
+}
+.card:hover .card-tags span { background: rgba(255, 255, 255, 0.14); color: var(--fg); }
+.card-meta {
+  display: block; margin-top: 9px;
+  font-size: 12.5px; color: var(--fg-3);
+  transition: color 0.25s var(--ease);
+}
+.card:hover .card-meta { color: var(--fg-2); }
+
+/* ══ 5. 닫는 말 ═══════════════════════════════════════════════ */
+
+.end { padding-block: clamp(110px, 20vh, 260px) clamp(28px, 4vh, 44px); }
+.end h2 {
+  margin: 0 0 clamp(16px, 2.2vh, 26px);
+  font-weight: 700;
+  font-size: clamp(30px, 5.6vw, 96px);
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+  max-width: 13ch;
+}
+.end-sub {
+  margin: 0 0 clamp(26px, 4vh, 48px);
+  font-size: clamp(16px, 1.5vw, 24px);
+  letter-spacing: -0.025em;
+  color: var(--fg-2);
+}
+
+.end-link {
+  display: inline-block;
+  font-weight: 700;
+  font-size: clamp(17px, 2.3vw, 36px);
+  letter-spacing: -0.035em;
+  color: var(--fg-2);
+  background-image: linear-gradient(#fff, #fff);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 2px;
+  transition: background-size 0.55s var(--ease), color 0.35s var(--ease);
+  word-break: break-all;
+}
+.end-link:hover { background-size: 100% 2px; color: var(--fg); }
+
+.foot {
+  margin-top: clamp(60px, 9vh, 110px);
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  display: flex; flex-wrap: wrap; gap: 12px 36px;
+  align-items: center; justify-content: space-between;
+  font-size: 12.5px; color: var(--fg-3);
+}
+.foot-links { display: flex; flex-wrap: wrap; gap: 22px; }
+.foot a { transition: color 0.25s var(--ease); }
+.foot a:hover { color: var(--fg); }
+
+/* ══ 모션을 끈 경우 ═══════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .fluid, .hero-tag, .hero-cue, .card, .say-note, .vals div {
+    opacity: 1 !important; transform: none !important; transition: none !important;
+  }
+  .say-text .w { color: var(--fg); }
+  .cue-ring svg { animation: none; }
+  .ticker-in { animation: none; }
+  .card-vis img { transition: none; }
+}
