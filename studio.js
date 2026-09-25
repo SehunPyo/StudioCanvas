@@ -262,4 +262,13 @@
 
   var year = document.getElementById('year');
   if (year) year.textContent = String(new Date().getFullYear());
+
+  /* ── 9. 카드 버전: 각 제품의 GitHub 최신 릴리즈 태그를 따른다 ─────
+     못 부르면(API 한도·오프라인) HTML 에 적힌 버전이 그대로 남는다. */
+  document.querySelectorAll('[data-release]').forEach(function (el) {
+    fetch('https://api.github.com/repos/' + el.getAttribute('data-release') + '/releases/latest')
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function (rel) { el.textContent = rel.tag_name; })
+      .catch(function () {});
+  });
 })();
